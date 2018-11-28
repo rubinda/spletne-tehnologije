@@ -1,0 +1,35 @@
+{
+  "name": "avocado-tracker",
+  "description": "NWjs aplikacija za sledenje cene avokada",
+  "license": "MIT",
+  "main": "dist/index.html",
+  "window": {
+    "toolbar": true,
+    "width": 820,
+    "height": 570
+  },
+  "scripts": {
+    "clean": "webpack --config webpack.config.clean.js",
+    "build": "webpack -p --config webpack.config.prod.js",
+    "start": "npm run build && cd NWjs && ./nw"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "babel-loader": "^8.0.4",
+    "clean-webpack-plugin": "^1.0.0",
+    "copy-webpack-plugin": "^4.6.0",
+    "eslint": "^5.7.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-import": "^2.14.0",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.26.0",
+    "webpack-cli": "^3.1.2"
+  },
+  "version": "1.0.0",
+  "dependencies": {
+    "csvtojson": "^2.0.8"
+  },
+  "author": "David Rubin"
+}

@@ -1,0 +1,101 @@
+<!-- views/pages/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="col col-lg-5 col-md-6">
+                         <% include ../partials/header %>
+                    </div>
+                    <div class="col col-lg-1 col-md-2 text-right">
+                            <a href="/questions/new">
+                                <i class="fas fa-plus-circle fa-3x new-question-btn" title="Novo vprašanje"></i>
+                            </a>
+                    </div>
+                </div>
+            </div>
+            
+           
+        </header>
+        <main class="container">
+            <% for (let i=0; i < questions.length; i+=1) { %>
+            <div class="row justify-content-md-center">
+                <div class="col col-lg-6 col-md-8 question-box shadow-sm">
+                    <div class="row">
+                        <div class="col question-author">
+                            <%= questions[i].author %>
+                        </div>
+                        <div class="col createdAt text-right">
+                            <% include ../../controllers/functions %> 
+                            <%= formatTime(questions[i].createdAt) %>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col question">
+                            <%= questions[i].question %>
+                        </div>
+                    </div>
+                    <% for (let j = 0; j < questions[i].comments.length; j += 1) { %>
+                    <div class="comment-box">
+                        <hr>
+                        <div class="row">
+                            <div class="col comments-author">
+                                <i class="fas fa-user-circle"></i>
+                                <%= questions[i].comments[j].author %>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col comment">
+                                <%= questions[i].comments[j].message %>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col commentAge">
+                                <%= formatTime(questions[i].comments[j].createdAt) %>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                    <div class="add-comment">
+                        <form action="/comment" method="POST">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col col-sm-3">
+                                        <label>Ime</label>
+                                        <input name="author" class="form-control form-control-sm" 
+                                            type="text" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$"
+                                            title="Polje je obvezno" required="true">
+                                    </div>
+                                    <div class="col col-sm-9">
+                                        <label>Komentar</label>
+                                        <input name="message" class="form-control form-control-sm" 
+                                            type="text" required="true" pattern="^[^-\s].+$">
+                                    </div>
+                                    <input type="hidden" name="questionId" value="<%= questions[i].id %>">
+                                </div>
+                                <div class="row button-row">
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-dark btn-sm">Dodaj komentar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </main>
+        <footer>
+            <% include ../partials/footer %>
+        </footer>
+    </div>
+</body>
+
+</html>

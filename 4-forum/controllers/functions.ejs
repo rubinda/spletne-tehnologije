@@ -1,0 +1,28 @@
+<%
+    formatTime = (time) => {
+        let timeSince = (Date.now() - time) / 1000;
+        let timeFormat = 'sekunde'
+        if (timeSince > 60 && timeSince < 3600) {
+            timeSince = Math.floor(timeSince / 60);
+            if (timeSince == 1) timeFormat = 'minuto'
+            else if (timeSince == 2) timeFormat = 'minutama'
+            else timeFormat = 'minutami'
+        } else if (timeSince >= 3600 && timeSince < 86400) {
+            timeSince = Math.floor(timeSince / 3600);
+            if (timeSince == 1) timeFormat = 'uro'
+            else if (timeSince == 2) timeFormat = 'urama'
+            else timeFormat = 'urami'
+        } else if (timeSince >= 86400) {
+            timeSince = Math.floor(timeSince / 86400);
+            if (timeSince == 1) timeFormat = 'dnevom'
+            else if (timeSince == 2) timeFormat = 'dnevoma'
+            else timeFormat = 'dnevi'
+        } else {
+            timeSince = Math.floor(timeSince)
+            if (timeSince == 1) timeFormat = 'sekundo'
+            else if (timeSince == 2) timeFormat = 'sekundama'
+            else timeFormat = 'sekundami'
+        }
+        return `pred ${timeSince} ${timeFormat}`;
+    }
+%>

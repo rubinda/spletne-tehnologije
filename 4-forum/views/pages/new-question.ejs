@@ -1,0 +1,69 @@
+<!-- views/pages/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+    <style>
+        .question-box {
+                    padding-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="col col-lg-6 col-md-8">
+                        <h4 style="margin-bottom: 0">
+                            <a class="new-question-btn" href="/">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                            Novo vprašanje
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="col col-lg-6 col-md-8 question-box">
+                        <form action="/questions" method="POST">
+                            <div class="row">
+                                <div class="col">
+                                    <label>Ime</label>
+                                    <input name="author" class="form-control form-control-sm" 
+                                        type="text" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$"
+                                        title="Ime mora vsebovati 2-20 znakov" required="true">
+                                </div>
+                            </div>
+                            <div class="row margin-top-10">
+                                <div class="col">
+                                    <label>Vprašanje</label>
+                                    <textarea name="question" id="questionText" cols="30" rows="3"
+                                        class="form-control form-control-sm" type="text" required="true"
+                                        pattern="^[^-\s].+$" title="Vprašanje ne more biti prazno"></textarea>
+                                    
+                                </div>
+                            </div>
+                            <div class="row button-row">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-dark btn-sm">Objavi vprašanje</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+        <footer>
+            <% include ../partials/footer %>
+        </footer>
+    </div>
+</body>
+
+</html>
