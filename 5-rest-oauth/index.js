@@ -8,6 +8,7 @@ const OAuth2Server = require('oauth2-server');
 
 const models = require('./models');
 const apiRoutes = require('./routes');
+const unprotected = require('./routes/unprotected');
 
 const app = express();
 
@@ -18,6 +19,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Belezenje requestov
 app.use(morgan('dev'));
+
+// Da preprecimo deprecated error, issue na trenutne driverju
+// https://github.com/Automattic/mongoose/issues/6880
+mongoose.set('useFindAndModify', false);
 
 
 // Vzpostavi povezavo z bazo
@@ -32,11 +37,11 @@ db.once('open', () => {
 const oauth = new OAuth2Server({
     model: {
         generateAccessToken(client, user, scope) { // eslint-disable-line no-unused-vars
-            console.log(chalk.blue('Generating'), 'an access token');
+            // console.log(chalk.blue('Generating'), 'an access token');
         },
 
         generateRefreshToken(client, user, scope) { // eslint-disable-line no-unused-vars
-            console.log(chalk.blue('Generating'), 'a refresh token');
+            // console.log(chalk.blue('Generating'), 'a refresh token');
         },
         getClient(clientId, clientSecret) { // eslint-disable-line no-unused-vars
             // Posici klienta v bazi in ga vrni?
@@ -47,12 +52,12 @@ const oauth = new OAuth2Server({
         },
 
         getUserFromClient(client) { // eslint-disable-line no-unused-vars
-            console.log(chalk.blue('Getting'), 'user from client');
+            // console.log(chalk.blue('Getting'), 'user from client');
         },
 
         async getUser(username, password) {
             // Poisci uporabnika v bazi in ga vrni
-            console.log(chalk.blue('Getting'), 'user from pass');
+            // console.log(chalk.blue('Getting'), 'user from pass');
             const user = await models.User.findOne({
                 username,
                 password,
@@ -84,23 +89,24 @@ const oauth = new OAuth2Server({
             };
         },
 
-        validateScope(user, client, scope) {
+        async validateScope(user, client, scope) {
             // uporabnik zahteva določen scope in tu spustimo naprej samo scope, ki jih dovolimo
             // ne rabimo mu odobriti vseh scopov, ki jih zahteva
             // dovoljeni scopi uporabnika so ponavadi zapisani v bazi
             // scope je poljuben niz, ponavadi več scopov ločimo z vejico
-            const VALID_SCOPES = ['read', 'write'];
+            const usr = await models.User.findOne({ _id: user.id });
+            const VALID_SCOPES = usr.scopes;
             return scope.split(' ').filter(s => VALID_SCOPES.indexOf(s) >= 0).join(' ');
         },
 
         generateAuthorizationCode(code, client, user) { // eslint-disable-line no-unused-vars
-            console.log('generateAuthorizationCode');
+            // console.log('generateAuthorizationCode');
         },
 
         async getAccessToken(accessToken) {
             // če najdeš token v bazi (shranjen je bil v funkciji saveToken) vrni objekt s tokenom
             // drugace null ali false
-            console.log(chalk.blue('Looking'), 'for an access token');
+            // console.log(chalk.blue('Looking'), 'for an access token');
 
             const tokec = await models.Token.findOne({
                 access: accessToken,
@@ -111,18 +117,18 @@ const oauth = new OAuth2Server({
             return {
                 accessToken: tokec.access,
                 accessTokenExpiresAt: tokec.accessExp,
-                scope: 'read',
+                scope: tokec.user.scopes.join(' '),
                 client: { id: tokec.client },
                 user: tokec.user,
             };
         },
 
         getAuthorizationCode(authorizationCode) { // eslint-disable-line no-unused-vars
-            console.log('getAuthorizationCode');
+            // console.log('getAuthorizationCode');
         },
 
         async getRefreshToken(refreshToken) {
-            console.log(chalk.blue('Looking'), 'for a refresh token');
+            // console.log(chalk.blue('Looking'), 'for a refresh token');
             const tokec = await models.Token.findOne({
                 refresh: refreshToken,
             }).populate('user');
@@ -132,18 +138,18 @@ const oauth = new OAuth2Server({
             return {
                 refreshToken: tokec.refresh,
                 refreshTokenExpiresAt: tokec.refreshExp,
-                scope: 'read',
+                scope: tokec.user.scopes.join(' '),
                 client: { id: tokec.client },
                 user: tokec.user,
             };
         },
 
         revokeAuthorizationCode(code) { // eslint-disable-line no-unused-vars
-            console.log('revokeAuthorizationCode');
+            // console.log('revokeAuthorizationCode');
         },
         async revokeToken(token) {
             // iz baze pobriši refresh token
-            console.log(`revokeToken: ${JSON.stringify(token)}`);
+            // console.log(`revokeToken: ${JSON.stringify(token)}`);
             // če najdes vrnes true drugace false
             const found = await models.Token.findOneAndDelete({
                 refresh: token,
@@ -154,13 +160,13 @@ const oauth = new OAuth2Server({
             return true;
         },
         saveAuthorizationCode(code, client, user) { // eslint-disable-line no-unused-vars
-            console.log('saveAuthorizationCode');
+            // console.log('saveAuthorizationCode');
         },
         verifyScope(accessToken, scope) {
             // zahtevan scope je v scope, ki se poda pri klicu authenicate za api metodo
             // scope, ki je dovoljen userju je shranjen v accessToken.scope,
             // scope, ki ga uporabnik hoče uveljavit pa v argumentu scope
-            console.log(`verifyScope: ${JSON.stringify(accessToken)} scope: ${scope}`);
+            // console.log(`verifyScope: ${JSON.stringify(accessToken)} scope: ${scope}`);
             if (!accessToken.scope) {
                 return false;
             }
@@ -173,7 +179,6 @@ const oauth = new OAuth2Server({
 
 // endpoint za pridobivanje access in refresh tokena
 app.post('/oauth/token', async (req, res, next) => {
-    console.log('oauth/token');
     const request = new OAuth2Server.Request(req);
     const response = new OAuth2Server.Response(res);
 
@@ -183,7 +188,7 @@ app.post('/oauth/token', async (req, res, next) => {
         // console.log("oauth.token: " + JSON.stringify(token));
         return res.json(token);
     } catch (err) {
-        return res.status(err.code || 500).json(err);
+        return next(err);
     }
 });
 
@@ -203,12 +208,25 @@ function authMiddleware(options) {
             next();
         } catch (err) {
             // Zahtevek ni avtoriziran
-            res.status(err.code || 500).json(err);
+            next(err);
         }
     };
 }
 
-app.use('/api', authMiddleware({ scope: 'read' }), apiRoutes);
+// Ce je zahteva prisla z Authorization headerjem poskusi preveriti
+// ali je avtorizacija prava (klici naslednji route), ce pa ni prisoten,
+// pa uporabi nezavarovan del
+app.use('/api', (req, res, next) => {
+    const { authorization } = req.headers;
+    if (authorization) {
+        next();
+    } else {
+        unprotected(req, res, next);
+    }
+});
+// Registrira auth habdlerja na cel endpoint
+app.use('/api', authMiddleware(), apiRoutes);
+
 
 // Dev error handler, will print a stacktrace
 if (app.get('env') === 'development') {

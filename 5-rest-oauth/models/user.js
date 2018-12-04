@@ -5,9 +5,10 @@ const userSchema = new mongoose.Schema({
     password: String, // geslo (ni hashirano)
     givenName: String, // uporabnikovo dano ime
     familyName: String, // uporabnikov priimek
-    age: String, // uporabnikova starost
+    age: { type: Number, min: 1, max: 120 }, // uporabnikova starost
     email: String, // uporabnikov naslov eposte
     role: String, // recimo admin ali basic
+    scopes: [String], // recimo 'read', 'write'
 }, {
     toJSON: {
         transform: (docs, ret) => {
@@ -15,6 +16,8 @@ const userSchema = new mongoose.Schema({
             obj.id = obj._id;
             delete obj._id;
             delete obj.__v;
+            delete obj.password;
+            delete obj.role;
             return obj;
         },
     },

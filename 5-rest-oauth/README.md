@@ -16,7 +16,7 @@ Novica ima naslov, opis, čas vstavljanja in uporabnika, ki jo je vstavil. Novic
 
 Uporabnik ima ime, priimek, starost in e-mail.
 
-Vsa opisana funkcionalnost mora biti izvedljiva preko API-ja. Za bazo lahko uporabite **MongoDB**. Access token ponavadi hranimo v bazi, ki živi v pomnilniku. Refresh token mora biti trajno shranjen, saj je njegova veljavnost ponavadi več let, oz. do preklica. Pri tej vaji implementirajte načiin password grant in refresh_token grant. Več o ostalih načinih si lahko preberete na strani https://alexbilbie.com/guide-to-oauth-2-grants/.
+Vsa opisana funkcionalnost mora biti izvedljiva preko API-ja. Za bazo lahko uporabite **MongoDB**. Access token ponavadi hranimo v bazi, ki živi v pomnilniku. Refresh token mora biti trajno shranjen, saj je njegova veljavnost ponavadi več let, oz. do preklica. Pri tej vaji implementirajte način *password grant* in *refresh_token grant*. Več o ostalih načinih si lahko preberete na strani https://alexbilbie.com/guide-to-oauth-2-grants/.
 
 API-ja za namen registracije uporabnikov ne rabite delati, zato v bazo ročno shranite nekaj navadnih uporabnikov in takih z vlogo admin.
 
