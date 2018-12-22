@@ -1,14 +1,15 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const graphql = require('express-graphql');
 const morgan = require('morgan');
 const chalk = require('chalk');
 const mongoose = require('mongoose');
 const OAuth2Server = require('oauth2-server');
 
 const models = require('./models');
-const apiRoutes = require('./routes');
-const unprotected = require('./routes/unprotected');
+const schema = require('./schema');
+const unprotected = require('./schema/unprotected');
 
 const app = express();
 
@@ -117,7 +118,7 @@ const oauth = new OAuth2Server({
             return {
                 accessToken: tokec.access,
                 accessTokenExpiresAt: tokec.accessExp,
-                scope: tokec.user.scopes.join(' '),
+                scope: tokec.scope,
                 client: { id: tokec.client },
                 user: tokec.user,
             };
@@ -206,7 +207,7 @@ function authMiddleware(options) {
 
         try {
             const token = await oauth.authenticate(request, response, options);
-            req.user = token;
+            req.userInfo = token;
             next();
         } catch (err) {
             // Zahtevek ni avtoriziran
@@ -218,16 +219,29 @@ function authMiddleware(options) {
 // Ce je zahteva prisla z Authorization headerjem poskusi preveriti
 // ali je avtorizacija prava (klici naslednji route), ce pa ni prisoten,
 // pa uporabi nezavarovan del
-app.use('/api', (req, res, next) => {
+app.use('/', (req, res, next) => {
     const { authorization } = req.headers;
     if (authorization) {
         next();
     } else {
-        unprotected(req, res, next);
+        req.url = `/free${req.url}`;
+        next();
     }
 });
 // Registrira auth habdlerja na cel endpoint
-app.use('/api', authMiddleware(), apiRoutes);
+app.use('/graphql', authMiddleware(), graphql(req => ({
+    schema,
+    graphiql: process.env.NODE_ENV === 'development',
+    context: req,
+})));
+
+// V kolikor ni bil podan authorization header se naj uveljavi
+// vir kjer lahko beremo le zastonj novice
+app.use('/free/graphql', graphql(req => ({
+    schema: unprotected,
+    graphiql: process.env.NODE_ENV === 'development',
+    context: req,
+})));
 
 
 // Dev error handler, will print a stacktrace

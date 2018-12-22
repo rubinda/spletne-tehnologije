@@ -1,0 +1,30 @@
+{
+  "name": "graphql-news",
+  "version": "1.0.0",
+  "description": "GraphQL vmesnik za novice, nekatere so zavarovane z OAuth 2.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "NODE_ENV=development node index.js"
+  },
+  "author": "David Rubin",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "chalk": "^2.4.1",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-graphql": "^0.7.1",
+    "graphql": "^14.0.2",
+    "graphql-date": "^1.0.3",
+    "mongoose": "^5.3.14",
+    "morgan": "^1.9.1",
+    "oauth2-server": "^3.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  }
+}
