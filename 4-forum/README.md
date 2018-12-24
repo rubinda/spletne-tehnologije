@@ -6,3 +6,7 @@ Uporabite podatkovno bazo [MongoDB](https://www.mongodb.com/), za strežniški d
 Stran oblikujte z [Bootstrap](https://getbootstrap.com/), uporabite razrede container, row, col, col-[1,2...], form-group, form-control, btn, btn-primary, btn-info ...
 
 Paketi: mongoose, express, in body-parser.
+
+## Screenshot rešitve
+
+![solution](./solution.png)

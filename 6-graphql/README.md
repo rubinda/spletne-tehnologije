@@ -15,3 +15,5 @@ Primer poizvedbe iz javascript-a (brskalnika/klient): [https://graphql.org/graph
 
 Rešitev lahko preverjamo s pomočjo [GraphiQL](https://electronjs.org/apps/graphiql). Pri podani zahtevi brez avtentikacije, nas 
 privzet vmesnik (@ localhost:3000/graphql) preusmeri na zastonjskega. V kolikor si pridobimo token (POST na /oauth/token), pa lahko tudi beremo plačljive novice, dodajamo komentarje, urejamo novice, dodajamo uporabnike. Seveda ima vsaka akcija dodatno avtorizacijo.
+
+![solution](./solution.png)

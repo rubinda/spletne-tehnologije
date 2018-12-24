@@ -82,7 +82,7 @@ function onListening() {
     const bind = typeof addr === 'string'
         ? `${addr}`
         : `localhost:${addr.port}`;
-    console.log('Server listening on', chalk.blue(`http://${bind}`));
+    console.log('Server listening on', chalk.blue(`https://${bind}`));
 }
 // Kljuc in certifikat za SSL
 const options = {

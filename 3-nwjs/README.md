@@ -44,3 +44,7 @@ npm run <ime skripte>
 ```
 
 Namestiti morate tudi paketa webpack in webpack-cli.
+
+## Screenshot rešitve
+
+![solution](./solution.png)

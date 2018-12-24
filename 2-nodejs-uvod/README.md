@@ -29,3 +29,7 @@ in nato namestite z ukazom
 ```bash
 npm install -g
 ```
+
+## Screenshot rešitve
+
+![slika](./solution.png)
