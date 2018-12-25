@@ -40,7 +40,7 @@ import 'bootstrap';
 
 Na začetni poti '/' naj bo začetna stran (npr. `HomeComponent`), kjer izpišete pozdrav. Stran ustvarite z: 
 ```bash
-ng generate component Home --spec=false.
+ng generate component Home --spec=false
 ```
 Na poti 'novice' se nahaja seznam novic s poljem za iskanje in vgnezdeno potjo 'avtor', kjer boste izpisali novice izbranega avtorja.
 
@@ -48,7 +48,7 @@ Na poti 'novice/vstavi' je obrazec za vstavljanje novice. To pot zaščitite z g
 
 Na poti '404' naj bo izpisano, da stran ne obstaja. Stran ustvarite z: 
 ```bash
-ng generate component NotFound --spec=false.
+ng generate component NotFound --spec=false
 ```
 Vse ostale nedefinirane poti preusmerite na pot '/404'.
 
@@ -57,7 +57,7 @@ Vse ostale nedefinirane poti preusmerite na pot '/404'.
 
 Za potrebe prijave ustvaritev storitev Angular (angl. Angular Service). Uporabite ukaz: 
 ```bash
-ng generate service Auth --flat=true --spec=false.
+ng generate service Auth --flat=true --spec=false
 ```
 Storitev ima metodi `singIn` in `signOut`. Storitev ima tudi javne lastnosti: `token, username, polnoIme, vloga` in `timeToEnd$ = new Subject()`;
 
@@ -69,7 +69,7 @@ Lastnost `timeToEnd$` naj vsako sekundo odda čas do konca odjave, dokler ne dos
 
 Storitev novic ustvarite z ukazom: 
 ```bash
-ng generate service seznam-novic/novice --flat=true --spec=false.
+ng generate service seznam-novic/novice --flat=true --spec=false
 ```
 Storitev naj implementira metode za pridobivanje, iskanje in vstavljanje novic. Uporabite `HttpClient`, ki ga uvozite z:
 ```typescript
@@ -98,7 +98,7 @@ export class Novica {
 
 Navigacija naj bo v glavi. Ustvarite komponento z ukazom: 
 ```bash
-ng generate component Navigacija --spec=false.
+ng generate component Navigacija --spec=false
 ```
 Komponento uporabite v app.component.html nad značko `router-outlet`.
 
@@ -110,7 +110,7 @@ Komponenta naj ima povezave na Domov, Novice, Vstavi novico in gumb za Prijavo.
 
 Po prijavi se naj gumb za prijavo skrije, prikazati se pa mora uporabniško ime z odštevanjem časa do odjave. Ob kliku na uporabniško ime se prikaže spustni meni z odjavo, tako da se lahko uporabnik odjavi pred potekom časa. Za meni uporabite razrede Bootstrap: `dropdown, dropdown-toggle in dropdown-menu`. Element div z razredom dropdown naj ima tudi atribut appDropdown, ki predstavlja direktivo. Implementacija je priložena v dropdown.directive.ts. Ne pozabiti dopolniti app.module.ts, kar se naredi avtomatsko, če direktivo ustvarite z: 
 ```bash
-ng generate directive shared/dropdown --spec=false.
+ng generate directive shared/dropdown --spec=false
 ```
 Namig:
 Časovnik lahko implementirate s knjižnico rxjs:
@@ -193,7 +193,7 @@ Na konec datoteke seznam-novic.component.html je za vgnezden route potrebno doda
 
 Obrazec za vstavljanje novic se nahaja na naslovu '/novice/vstavi'. Komponento ustvarite z: 
 ```bash
-ng generate component VstaviNovico --spec=false.
+ng generate component VstaviNovico --spec=false
 ```
 Uporabite [Reactive Forms](https://angular.io/guide/reactive-forms) in ne Template-driven Forms. V app.module.ts dodajte `ReactiveFormsModule`.
 
