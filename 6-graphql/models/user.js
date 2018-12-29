@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema({
             delete obj._id;
             delete obj.__v;
             delete obj.password;
-            delete obj.role;
             return obj;
         },
     },

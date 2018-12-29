@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Article } from '../article';
+import { Article } from '../shared/models/article';
+import { NewsService } from '../shared/services/news.service'; 
 
 @Component({
   selector: 'app-news',
@@ -26,7 +27,9 @@ export class NewsComponent implements OnInit {
     },
   ];
 
-  constructor() { }
+  constructor(
+    public newsService: NewsService
+  ) { }
 
   ngOnInit() {
   }

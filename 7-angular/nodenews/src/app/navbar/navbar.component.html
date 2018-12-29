@@ -1,0 +1,63 @@
+<div class="container">
+  <div class="row border-panel title-panel">
+    <div class="col-md-auto site-title">
+      <a routerLink="/" routerLinkActive="router-link-active" 
+      [routerLinkActiveOptions]="{exact:true}">Portal novic</a>
+    </div>
+    <div class="col-md-auto align-self-end">
+      <a class="title-link" routerLink="/news" routerLinkActive="router-link-active"
+        [routerLinkActiveOptions]="{exact:true}">Novice</a>
+    </div>
+    <div class="col-md-auto align-self-end">
+      <a class="title-link" routerLink="/news/add" routerLinkActive="router-link-active" 
+        [routerLinkActiveOptions]="{exact:true}">Vstavi novico</a>
+    </div>
+    <div class="col-md-auto ml-auto align-self-center" *ngIf="!this.loggedIn">
+      <a class="title-link" routerLink="/login" routerLinkActive="router-link-active"
+        data-toggle="modal" data-target="#loginModal">Prijava</a>
+    </div>
+
+    <div class="col-md-auto ml-auto align-self-center dropdown" *ngIf="this.loggedIn" appDropdown>
+        <a class="btn btn-outline-secondary btn-xs dropdown-toggle" href="#" role="button" id="dropdownMenuLink" 
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ this.tokec.user.givenName }} {{ this.tokec.user.familyName }} {{ this.remainingTime }}
+        </a>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="#">Odjava</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-wrapper">
+          <form [formGroup]="loginForm" (ngSubmit)="login()">
+              <div class="form-group">
+                <label for="titleInput">Uporabniško ime</label>
+                <input type="text" class="form-control" formControlName="username" id="titleInput" required
+                  [ngClass]="{ 'is-invalid': f.username.touched && f.username.errors }">
+                <small class="text-danger" *ngIf="f.username.touched && f.username.errors?.required">Polje je obvezno</small>
+              </div>
+              <div class="form-group">
+                <label for="newsBody">Geslo</label>
+                <input type="password" class="form-control" id="password" formControlName="password" required
+                  [ngClass]="{ 'is-invalid': f.password.touched && f.password.errors }">
+                <small class="text-danger" *ngIf="f.password.touched && f.password.errors?.required">Polje je obvezno</small>
+              </div>
+              <div class="form-group">
+                <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                <span class="text-danger"> {{this.errorMsg }}</span>
+              </div>
+              <button type="submit" class="btn btn-xs btn-primary float-right" [disabled]="!loginForm.valid || loading">Prijava</button>
+              <button type="button" class="btn btn-xs btn-secondary float-right" data-dismiss="modal">Prekliči</button>
+            </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
