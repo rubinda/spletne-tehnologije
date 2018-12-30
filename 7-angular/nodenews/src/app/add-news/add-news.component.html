@@ -1,15 +1,33 @@
 <div class="container">
   <div class="form-wrapper">
-    <form>
+    <form [formGroup]="novicaForm">
         <div class="form-group">
           <label for="titleInput">Naslov</label>
-          <input type="text" class="form-control" id="titleInput">
+          <input type="text" class="form-control" formControlName="title" id="titleInput"
+            [ngClass]="{ 'is-invalid': f.title.touched && f.title.errors }">
+          <small class="text-error" *ngIf="f.title.touched && f.title.errors?.required">Polje je obvezno</small>
         </div>
         <div class="form-group">
           <label for="newsBody">Vsebina</label>
-          <textarea class="form-control" name="newsBody" id="newsBody" rows="10"></textarea>
+          <textarea class="form-control" name="newsBody" formControlName="contents" id="newsBody" rows="10"
+            [ngClass]="{ 'is-invalid': f.contents.touched && f.contents.errors }"></textarea>
+          <small class="text-error" *ngIf="f.contents.touched && f.contents.errors?.required">Polje je obvezno</small>
         </div>
-        <button type="submit" class="btn btn-primary">Objavi</button>
+        <div class="form-group" formGroupName="keywords">
+          <label>Ključne besede</label>
+          <div class="input-group mb-1" *ngFor="let keyword of novicaForm.get('keywords').controls; let i = index">
+            <input type="text" class="form-control" formControlName="{{ i }}">
+            <div *ngIf="novicaForm.get('keywords').controls.length > 1" class="input-group-append">
+              <span class="input-group-text remove-icon" (click)="removeKeywordAt(i)">
+                <i class="fas fa-times text-danger"></i>
+              </span>
+            </div>
+          </div>
+          <a id="keyword-link" (click)="addKeyword()">Dodaj besedo</a>
+        </div>
+        <div class="text-right">
+          <button type="submit" class="btn btn-primary" [disabled]="!novicaForm.valid">Objavi</button>
+        </div>
       </form>
   </div>
 </div> 

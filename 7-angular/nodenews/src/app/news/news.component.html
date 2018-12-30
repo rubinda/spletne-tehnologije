@@ -1,7 +1,27 @@
-<div class="container">
+<div class="container" *ngIf="news?.length == 0">
+  <div class="row justify-content-center">
+    <div class="col-md-auto text-center">
+      <img src="assets/img/hippo-titus.jpg" alt="Sad hippo" />
+      <div class="sign-no-results">Ni zadetkov :(</div>
+    </div>
+  </div>
+</div>
+<div class="container" *ngIf="news?.length > 0">
+  <!-- Prikaz iskalne vrstice -->
+  <div class="row mb-3">
+      <div class="col-sm-6">
+          <div class="input-group mb-1">
+            <input type="text" class="form-control search-bar" placeholder="Filtriraj novice">
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="fas fa-search"></i>
+              </span>
+            </div>
+          </div>      
+      </div>
+  </div>
+  <!-- Prikaz oglasov -->
   <div class="card-columns">
-
     <app-article *ngFor="let article of news" [article]="article"></app-article>
-
   </div>
 </div>

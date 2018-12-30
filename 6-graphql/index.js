@@ -115,7 +115,6 @@ const oauth = new OAuth2Server({
             if (!tokec) {
                 return false;
             }
-            console.log(tokec);
             return {
                 accessToken: tokec.access,
                 accessTokenExpiresAt: tokec.accessExp,

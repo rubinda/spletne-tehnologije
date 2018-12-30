@@ -6,13 +6,13 @@ const mongoose = require('mongoose');
 // brezplacna ali placljiva
 const articleSchema = new mongoose.Schema({
     title: String, // e.g. Konjice dobile novega Zupana
-    description: String, // e.g. V drugem krogu lokalnih volitev so v Sl. Konjicah
+    contents: String, // e.g. V drugem krogu lokalnih volitev so v Sl. Konjicah
     // Izvolili novega zupana.
     createdAt: Date, // e.g. 2.12.2018 8.10
     lastModified: Date, // e.g. 2.12.2018 8.33
     author: { type: mongoose.SchemaTypes.ObjectId, ref: 'User' }, // User id
     subscriptionType: String, // e.g. premium || free/basic
-
+    keywords: [String], // Kljucne besede, recimo angular, mongodb, apollo, graphql
 }, {
     toJSON: {
         transform: (docs, ret) => {

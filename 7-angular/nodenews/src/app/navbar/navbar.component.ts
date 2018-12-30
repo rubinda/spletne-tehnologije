@@ -4,6 +4,7 @@ import 'bootstrap';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
 import { Token } from '../shared/models/token';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -17,6 +18,7 @@ export class NavbarComponent implements OnInit {
   loggedIn: boolean;
   loading: boolean;
   errorMsg: string;
+  subscription: Subscription
   
   constructor(
     private formBuilder: FormBuilder,
@@ -47,7 +49,7 @@ export class NavbarComponent implements OnInit {
   }
 
   getTimeLeft() {
-    this.authService.timeToEnd$.subscribe({
+    this.subscription = this.authService.timeToEnd$.subscribe({
       next: t => {
         this.remainingTime = t;
         if (this.remainingTime == 0) {
@@ -65,16 +67,18 @@ export class NavbarComponent implements OnInit {
         this.tokec = response;
         this.loggedIn = true;
         this.getTimeLeft();
+        $('#loginModal').modal('hide');
       },
       error => {
         this.errorMsg = error.error.error;
         this.loading = false;
-        console.error(error)
       }
     )
   }
 
   logout() {
+    this.subscription.unsubscribe();
+    this.loggedIn = false;
     this.authService.signOut();
   }
 

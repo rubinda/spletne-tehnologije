@@ -26,12 +26,21 @@ export class NewsComponent implements OnInit {
       subscriptionType: false,
     },
   ];
+  loading: boolean = true;
 
   constructor(
     public newsService: NewsService
-  ) { }
+  ) {}
 
   ngOnInit() {
+    this.newsService.getNews().subscribe(
+      response => {
+        this.news = response.data.news;
+        this.loading = false;
+      }, error => {
+        console.error(error);
+      }
+    )
   }
 
 }

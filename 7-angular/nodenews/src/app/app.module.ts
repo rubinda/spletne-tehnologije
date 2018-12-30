@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 
 import { ReactiveFormsModule }    from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { ApolloModule } from 'apollo-angular';
+import { HttpLinkModule } from 'apollo-angular-link-http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,7 +17,9 @@ import { ArticleComponent } from './article/article.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
 import { DropdownDirective } from './shared/dropdown.directive';
-
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { GraphQLModule } from './apollo.config';
+ 
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +29,8 @@ import { DropdownDirective } from './shared/dropdown.directive';
     AddNewsComponent,
     ArticleComponent,
     NavbarComponent,
-    DropdownDirective
+    DropdownDirective,
+    UnauthorizedComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +38,9 @@ import { DropdownDirective } from './shared/dropdown.directive';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    ApolloModule,
+    HttpLinkModule,
+    GraphQLModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

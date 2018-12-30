@@ -38,7 +38,7 @@ const ArticleType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         title: { type: GraphQLString },
-        description: { type: GraphQLString },
+        contents: { type: GraphQLString },
         createdAt: { type: GraphQLDate },
         author: {
             type: AuthorType,
@@ -54,6 +54,7 @@ const ArticleType = new GraphQLObjectType({
                 return models.Comment.find({ article: parent.id });
             },
         },
+        keywords: { type: GraphQLList(GraphQLString) },
     }),
 });
 

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Subject, interval, Observable } from 'rxjs';
+import { Subject, interval, Observable, Subscription } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Token } from '../models/token';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +11,11 @@ import { Token } from '../models/token';
 export class AuthService {
   private authUrl: string = 'http://localhost:3000/oauth/token';
   public timeToEnd$: Subject<number> = new Subject();
+  private countdown: Subscription;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+              private router: Router) {
+              }
 
   signIn(username: string, password: string): Observable<Token> {
     const httpOptions = {
@@ -36,6 +40,7 @@ export class AuthService {
               1000
           );
           this.signOutCountdown(expiresIn);
+          this.router.navigate(['/news']);
           return response;
         },
         error => console.error(error)
@@ -45,7 +50,7 @@ export class AuthService {
 
   signOutCountdown(secondsLeft: number) {
     // Ustvari nov timer, ki traja toliko kolikor ima token cas poteka
-    interval(1000)
+    this.countdown = interval(1000)
     .pipe(
       take(secondsLeft),
       map(t => secondsLeft - 1 - t)
@@ -60,5 +65,7 @@ export class AuthService {
 
   signOut() {
     localStorage.removeItem('tokec');
+    this.countdown.unsubscribe();
+    this.router.navigate(['/']);
   }
 }

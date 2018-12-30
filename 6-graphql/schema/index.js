@@ -38,7 +38,7 @@ const ArticleType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         title: { type: GraphQLString },
-        description: { type: GraphQLString },
+        contents: { type: GraphQLString },
         createdAt: { type: GraphQLDate },
         author: {
             type: AuthorType,
@@ -54,6 +54,7 @@ const ArticleType = new GraphQLObjectType({
                 return models.Comment.find({ article: parent.id });
             },
         },
+        keywords: { type: GraphQLList(GraphQLString) },
     }),
 });
 
@@ -137,8 +138,9 @@ const Mutations = new GraphQLObjectType({
             type: ArticleType,
             args: {
                 title: { type: new GraphQLNonNull(GraphQLString) },
-                description: { type: new GraphQLNonNull(GraphQLString) },
+                contents: { type: new GraphQLNonNull(GraphQLString) },
                 subscriptionType: { type: new GraphQLNonNull(GraphQLString) },
+                keywords: { type: new GraphQLList(GraphQLString) },
             },
             async resolve(parent, args, req) {
                 const tokec = req.userInfo;
@@ -147,11 +149,12 @@ const Mutations = new GraphQLObjectType({
                 }
                 const newArticle = new models.Article({
                     title: args.title,
-                    description: args.description,
+                    contents: args.contents,
                     author: tokec.user.id,
                     createdAt: Date.now(),
                     lastModified: Date.now(),
                     subscriptionType: args.subscriptionType,
+                    keywords: args.keywords,
                 });
 
                 const id = await newArticle.save();
@@ -163,7 +166,7 @@ const Mutations = new GraphQLObjectType({
             type: ArticleType,
             args: {
                 title: { type: GraphQLString },
-                description: { type: GraphQLString },
+                contents: { type: GraphQLString },
                 subscriptionType: { type: GraphQLString },
                 id: { type: new GraphQLNonNull(GraphQLString) },
             },
@@ -180,8 +183,8 @@ const Mutations = new GraphQLObjectType({
                 if (args.title) {
                     novica.title = args.title;
                 }
-                if (args.description) {
-                    novica.description = args.description;
+                if (args.contents) {
+                    novica.contents = args.contents;
                 }
                 if (args.subscriptionType) {
                     novica.subscriptionType = args.subscriptionType;
@@ -199,7 +202,6 @@ const Mutations = new GraphQLObjectType({
             },
             resolve(parent, args, req) {
                 const tokec = req.userInfo;
-                console.log(tokec);
                 if (!tokec.scope.includes('write')) {
                     throw new Error('Nimate dovoljenja za komentiranje');
                 }

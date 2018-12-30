@@ -1,13 +1,46 @@
 .form-wrapper
+  color: #000000
   border: 3px solid #262622
   border-radius: 10px
-  background-color: #565b5f
+  background-color: #fff
   padding: 20px
   margin-top: 20px
 
 label
-  color: #fff
+  color: #000
   text-transform: uppercase
   font-weight: bold
   font-size: 10pt
   margin-bottom: 1px
+
+.text-error
+  color: #f09ca4
+  font-size: 8pt
+  font-weight: bold
+  text-transform: uppercase
+
+.form-control.is-invalid, .was-validated .form-control:invalid:focus
+  border: 2px solid #f09ca4
+
+.add-on .input-group-btn > .btn
+  border-left-width: 0
+  left: -2px
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)
+
+/* stop the glowing blue shadow */
+.add-on .form-control:focus
+ box-shadow: none
+ -webkit-box-shadow: none
+ border-color: #cccccc 
+
+.remove-icon
+  background-color: #ffe8e8
+  cursor: pointer
+  
+#keyword-link
+  font-size: 9pt
+
+#keyword-link:hover
+  cursor: pointer
+  text-decoration: underline
