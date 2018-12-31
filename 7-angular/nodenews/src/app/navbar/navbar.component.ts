@@ -35,7 +35,8 @@ export class NavbarComponent implements OnInit {
       $('#myInput').trigger('focus')
     });
 
-    this.tokec = JSON.parse(localStorage.getItem('tokec'));
+    this.tokec = this.authService.getToken();
+    this.loggedIn = false;
     if (this.tokec) {
       if (this.tokec.user) {
         // Uporabnik se ima token v local storage in je prijavljen

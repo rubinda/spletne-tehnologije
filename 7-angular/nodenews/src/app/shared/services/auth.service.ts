@@ -68,4 +68,17 @@ export class AuthService {
     this.countdown.unsubscribe();
     this.router.navigate(['/']);
   }
+
+  getToken(): Token {
+    let tokec = JSON.parse(localStorage.getItem('tokec'));
+    if (tokec) {
+      let expired = (new Date(tokec.accessTokenExpiresAt).getTime() - new Date().getTime()) <= 0
+      if (expired) {
+        localStorage.removeItem('tokec');
+        tokec = null
+      }
+      console.log('got nonexpired tokec)')
+    }
+    return tokec 
+  }
 }

@@ -2,7 +2,7 @@
 export class Article {
   public author: string;
   public title: string;
-  public subscriptionType: boolean;
+  public subscriptionType: string;
   public createdAt: Date;
   public keywords: string[];
   public contents: string;

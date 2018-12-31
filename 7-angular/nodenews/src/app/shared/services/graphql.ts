@@ -15,6 +15,18 @@ export const ALL_NEWS = gql`query {
   }
 }`
 
+export const MAKE_NEWS = gql`
+  mutation insertArticle($title: String!, $contents: String!, $subscriptionType: String!, $keywords: [String]!) {
+    insertArticle(title: $title, contents: $contents, subscriptionType: $subscriptionType, keywords: $keywords) {
+      id
+    }
+  }
+`
+
+export interface MakeNewsResponse {
+  id: string;
+}
+
 export interface AllNewsQueryResponse {
   news: Article[];
   loading: boolean;

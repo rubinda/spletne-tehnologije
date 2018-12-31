@@ -14,11 +14,12 @@ import { NewsComponent } from './news/news.component';
 import { AddNewsComponent } from './add-news/add-news.component';
 import { ArticleComponent } from './article/article.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { GraphQLModule } from './apollo.config';
+import { TokenInterceptor } from './shared/services/auth.interceptor';
  
 @NgModule({
   declarations: [
@@ -42,7 +43,13 @@ import { GraphQLModule } from './apollo.config';
     HttpLinkModule,
     GraphQLModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
