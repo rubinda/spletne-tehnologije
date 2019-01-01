@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Article } from '../shared/models/article';
-import { NewsService } from '../shared/services/news.service'; 
-import { ALL_NEWS } from '../shared/services/graphql';
-import { Apollo } from 'apollo-angular';
+import { NewsService } from '../shared/services/news.service';
+import { MessengerService } from '../shared/services/messenger.service';
 
 @Component({
   selector: 'app-news',
@@ -12,21 +11,27 @@ import { Apollo } from 'apollo-angular';
 export class NewsComponent implements OnInit {
   news: Article[] = [];
   loadingNews: boolean = true;
-  querySubscription: any;
+
+
   constructor(
-    public newsService: NewsService,
-    private apollo: Apollo
+    private newsService: NewsService,
+    private messenger: MessengerService,
   ) {}
 
   ngOnInit() {
     this.getNews();
+    this.messenger.change.subscribe(
+      loggedIn => {
+        this.news = [];
+        this.getNews();
+      }
+    )
   }
 
   getNews() {
     this.loadingNews = true;
     this.newsService.getNews().subscribe(
       response => {
-        console.log('new respons')
         this.news = response.data.news;
         this.loadingNews = false;
       }, error => {

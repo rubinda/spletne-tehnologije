@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as $ from 'jquery';
 import 'bootstrap';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
 import { Token } from '../shared/models/token';
 import { Subscription } from 'rxjs';
+import { MessengerService } from '../shared/services/messenger.service';
 
 @Component({
   selector: 'app-navbar',
@@ -19,10 +20,12 @@ export class NavbarComponent implements OnInit {
   loading: boolean;
   errorMsg: string;
   subscription: Subscription
+
   
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private messenger: MessengerService,
   ) { }
 
   ngOnInit() {
@@ -69,6 +72,9 @@ export class NavbarComponent implements OnInit {
         this.loggedIn = true;
         this.getTimeLeft();
         $('#loginModal').modal('hide');
+
+        // Sporoci novicam, naj se posodobijo (vkljucijo placljive)
+        this.messenger.toggleLogin(this.loggedIn);
       },
       error => {
         this.errorMsg = error.error.error;
@@ -81,6 +87,9 @@ export class NavbarComponent implements OnInit {
     this.subscription.unsubscribe();
     this.loggedIn = false;
     this.authService.signOut();
+
+    // Sporoci novicam, naj se posodobijo (odstranijo placljive)
+    this.messenger.toggleLogin(this.loggedIn);
   }
 
   // convenience getter for easy access to form fields

@@ -65,8 +65,7 @@ export class AuthService {
 
   signOut() {
     localStorage.removeItem('tokec');
-    this.countdown.unsubscribe();
-    this.router.navigate(['/']);
+    this.countdown.unsubscribe();    
   }
 
   getToken(): Token {
@@ -77,7 +76,6 @@ export class AuthService {
         localStorage.removeItem('tokec');
         tokec = null
       }
-      console.log('got nonexpired tokec)')
     }
     return tokec 
   }

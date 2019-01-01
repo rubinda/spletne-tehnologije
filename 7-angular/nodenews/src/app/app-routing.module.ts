@@ -6,14 +6,35 @@ import { NewsComponent } from './news/news.component';
 import { AddNewsComponent } from './add-news/add-news.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { CanDeactivateGuard } from './shared/guards/leave-news.guard';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'news', component: NewsComponent },
-  { path: 'news/add', component: AddNewsComponent, canActivate: [ AuthGuard ] },
-  { path: '404', component:  NotFoundComponent },
-  { path: '403', component: UnauthorizedComponent },
-  { path: '**', redirectTo: '404' }, 
+  { 
+    path: '', 
+    component: HomeComponent,
+  },
+  { 
+    path: 'news', 
+    component: NewsComponent,
+  },
+  { 
+    path: 'news/add',
+    component: AddNewsComponent, 
+    canActivate: [ AuthGuard ], 
+    canDeactivate: [ CanDeactivateGuard ],
+  },
+  { 
+    path: '404', 
+    component:  NotFoundComponent 
+  },
+  { 
+    path: '401', 
+    component: UnauthorizedComponent 
+  },
+  { 
+    path: '**', 
+    redirectTo: '404' 
+  }, 
 
 ];
 

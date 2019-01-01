@@ -24,7 +24,8 @@ export class AuthGuard implements CanActivate {
     }
     // Tokec ne obstaja, ali pa ni admin
     if (!canWriteArticle)
-      this.router.navigate(['/403'])
+      this.router.navigate(['/401'])
+
     return canWriteArticle;
   }
 }

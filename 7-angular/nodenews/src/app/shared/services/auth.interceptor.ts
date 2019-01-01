@@ -16,7 +16,6 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let tokec = this.auth.getToken();
     // Ce tokec ni enak null potem dodaj na request tokec
-    console.log('tokec')
     if (tokec) { 
       request = request.clone({
         setHeaders: {
