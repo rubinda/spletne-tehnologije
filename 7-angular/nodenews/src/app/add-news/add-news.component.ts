@@ -66,7 +66,6 @@ export class AddNewsComponent implements OnInit {
     } else if (this.saved) {
       return true;
     } else {
-      console.log(this.novicaForm.value)
       return confirm("Želite zavreči nedokončan obrazec?");
     }
 }

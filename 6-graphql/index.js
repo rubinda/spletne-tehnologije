@@ -69,14 +69,15 @@ const oauth = new OAuth2Server({
         saveToken(token, client, user) {
             // console.log('Saving token: ', JSON.stringify(token), 'for user: ',
             //  JSON.stringify(user), 'and client:', JSON.stringify(client));
+            const now = new Date();
             const tokec = new models.Token({
                 access: token.accessToken,
-                accessExp: token.accessTokenExpiresAt,
+                accessExp: now.setSeconds(now.getSeconds() + 3600),
                 refresh: token.refreshToken,
                 refreshExp: token.refreshTokenExpiresAt,
                 scope: token.scope,
                 client: client.id,
-                user: user,
+                user,
             });
             tokec.save();
             return {

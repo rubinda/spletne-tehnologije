@@ -177,7 +177,7 @@ Besedila plačljivih novic so vidna samo prijavljenim uporabnikom:
 ```html
 <div *ngIf="(authService.mytoken!='' || !novica.placljiva); else prijaviSe">{{novica.besedilo}}</div>
 ```
-V nasprotnem primeru se mora izpisati "Prijavi se za vsebino". Ko prijava poteče, se besedila plačljivih novic avtomatsko skrijejo. Ob kliku na avtorja novice se naj na dnu strani pojavi seznam naslovov in datumov vseh novic izbranega avtorja. Za to uporabite nested route. Ustvarite komponento: 
+V nasprotnem primeru se mora izpisati "Prijavi se za vsebino". Ko prijava poteče, se besedila plačljivih novic avtomatsko skrijejo. Ob kliku na avtorja novice se naj na dnu strani pojavi seznam naslovov in datumov vseh novic izbranega avtorja. Za to uporabite `nested route`. Ustvarite komponento: 
 ```bash
 ng generate component seznam-novic/NoviceAvtorja --spec=false
 ```
@@ -280,3 +280,10 @@ Interceptor ustvarite z ukazom:
 ng generate service shared/TokenInterceptor --flat=true --spec=false
 ```
 Interceptor, naj prestreže zahtevo, jo klonira in nato doda avtorizacijsko zaglavje z žetonom. Novo zahtevo naj nato pošlje dalje. Zaglavje ni treba vedno dodati, npr. pri prijavi, zato lahko tudi preverite, na kateri naslov se zahteva pošilja.
+
+---
+## Rešitev
+
+Rešitev se nahaja znotraj mape [nodenews](./nodenews), kjer je tudi opis kako zagnati strežnik in popravek potreben za pravilno delovanje knjižnice.
+
+![solution](./solution.png)

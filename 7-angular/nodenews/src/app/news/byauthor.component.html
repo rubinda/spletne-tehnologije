@@ -1,0 +1,17 @@
+<div class="container author-wrapper">
+  <div class="row">
+    <div class="col">Novice avtorja <b>{{ this.authorUsername }}</b>: </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <ul *ngIf="this.articlesFromAuthor.length > 0">
+        <li *ngFor="let article of this.articlesFromAuthor">
+          {{ article.title }} <small class="text-muted">({{ article.createdAt | date:'short' }})</small>
+        </li>
+      </ul>
+      <small class="text-warning" *ngIf="this.articlesFromAuthor.length == 0">
+        Podano avtor nima novic
+      </small>
+    </div>
+  </div>
+</div>

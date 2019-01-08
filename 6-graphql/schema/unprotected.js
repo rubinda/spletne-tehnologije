@@ -86,10 +86,42 @@ const RootQuery = new GraphQLObjectType({
         },
         news: {
             type: new GraphQLList(ArticleType),
+            args: { filter: {type: GraphQLString} },
             resolve(parent, args) { // eslint-disable-line no-unused-vars
-                return models.Article.find({ subscriptionType: 'free' });
+                if (args.filter) {
+                    return models.Article.find({
+                        $or: [
+                            {
+                                "title": { $regex: args.filter, $options: 'i' },
+                            },
+                            {
+                                "contents": { $regex: args.filter, $options: 'i' },
+                            },
+                            {
+                                "keywords": { $regex: args.filter, $options: 'i' },
+                            },
+                        ],
+                        subscriptionType: 'free',
+                    });
+                } else {
+                    return models.Article.find({subscriptionType: 'free'});
+                }
             },
         },
+        newsFromAuthor: {
+            type: new GraphQLList(ArticleType),
+            args: { username: { type: GraphQLString } },
+            async resolve(parent, args) {
+                if (args.username) {
+                    const user = await models.User.findOne({ username: args.username });
+                    return models.Article.find({
+                        author: user.id,
+                        subscriptionType: 'free',
+                    });
+                }
+            },
+        },
+
         authors: {
             type: new GraphQLList(AuthorType),
             resolve(parent, args) { // eslint-disable-line no-unused-vars

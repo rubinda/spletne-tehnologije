@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Apollo } from 'apollo-angular';
 
-import { ALL_NEWS, AllNewsQueryResponse, MakeNewsResponse, MAKE_NEWS } from './graphql';
-import { Article } from '../models/article';
+import { ALL_NEWS, AllNewsQueryResponse, MakeNewsResponse, 
+  MAKE_NEWS, NEWS_FROM_AUTHOR, AuthorArticlesResponse } from './graphql';
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +10,17 @@ import { Article } from '../models/article';
 export class NewsService {
   private newsURL = 'http://localhost:3000/graphql';
   
-  constructor(private http: HttpClient,
-              private apollo: Apollo) { }
+  constructor(private apollo: Apollo) { }
 
   // Vrne vse novice
-  getNews() {
+  getNews(filter: string) {
     return this.apollo.watchQuery<AllNewsQueryResponse>({
       query: ALL_NEWS,
+      variables: {
+        filterText: filter
+      },
       fetchPolicy: 'network-only',
-    }).valueChanges
+    }).valueChanges;
   }
 
   // Ustvari zapis o novici
@@ -37,5 +38,15 @@ export class NewsService {
         subscriptionType,
       }
     });
+  }
+
+  getNewsByAuthor(username: string) {
+    return this.apollo.watchQuery<AuthorArticlesResponse>({
+      query: NEWS_FROM_AUTHOR,
+      variables: {
+        username,
+      },
+      fetchPolicy: 'network-only',
+    }).valueChanges;
   }
 }

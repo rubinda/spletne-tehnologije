@@ -9,7 +9,9 @@
       {{ article.contents }}
     </p>
     <p class="card-text text-right">
-      <small class="text-muted">{{ article.author.givenName }} {{ article.author.familyName }}</small>
+      <a routerLink="/news/author" [queryParams]="{a: article.author.username}">
+        <small class="text-muted">{{ article.author.givenName }} {{ article.author.familyName }}</small>
+      </a>
     </p>
   </div>
 </div>

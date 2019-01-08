@@ -7,6 +7,7 @@ import { AddNewsComponent } from './add-news/add-news.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { CanDeactivateGuard } from './shared/guards/leave-news.guard';
+import { ByauthorComponent } from './news/byauthor.component';
 
 const routes: Routes = [
   { 
@@ -16,6 +17,11 @@ const routes: Routes = [
   { 
     path: 'news', 
     component: NewsComponent,
+    children: [
+      {
+        path: 'author', component: ByauthorComponent,
+      },
+    ],
   },
   { 
     path: 'news/add',

@@ -1,36 +1,38 @@
-<div class="container" *ngIf="news?.length == 0 && !loadingNews">
-  <div class="row justify-content-center">
-    <div class="col-md-auto text-center">
-      <img src="assets/img/hippo-titus.jpg" alt="Sad hippo" />
-      <div class="sign-no-results">Ni zadetkov :(</div>
-    </div>
-  </div>
-</div>
-<div *ngIf="loadingNews" class="container">
-  <div class="row justify-contenet-center">
-    <div class="col">
-      Nalagam novice ...
-      <img  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />     
-    </div>
-  </div>
-</div>
-<div class="container" *ngIf="news?.length > 0">
+
+<div class="container" >
   <!-- Prikaz iskalne vrstice -->
   <div class="row mb-3">
       <div class="col-sm-6">
-          <div class="input-group mb-1">
-            <input type="text" class="form-control search-bar" placeholder="Filtriraj novice">
+        <form>
+          <div class="input-group mb-1" [formGroup]="searchInput">
+            <input type="text" class="form-control search-bar" placeholder="Filtriraj novice"
+              formControlName="filter">
             <div class="input-group-append">
               <span class="input-group-text">
                 <i class="fas fa-search"></i>
               </span>
             </div>
-          </div>      
+          </div>
+        </form>      
       </div>
   </div>
+  <div *ngIf="loadingNews" class="container">
+    <div class="row justify-contenet-center">
+      <div class="col">
+        Nalagam novice ...
+        <img  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />     
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center" *ngIf="news?.length == 0 && !loadingNews">
+    <div class="col-md-auto text-center">
+      <img src="assets/img/hippo-titus.jpg" alt="Sad hippo" />
+      <div class="sign-no-results">Ni zadetkov :(</div>
+    </div>
+  </div>
   <!-- Prikaz oglasov -->
-  <div class="card-columns">
+  <div class="card-columns" *ngIf="news?.length > 0">
     <app-article *ngFor="let article of news" [article]="article"></app-article>
-    
   </div>
 </div>
+<router-outlet></router-outlet>

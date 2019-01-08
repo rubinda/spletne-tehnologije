@@ -58,6 +58,7 @@ export class NavbarComponent implements OnInit {
         this.remainingTime = t;
         if (this.remainingTime == 0) {
           this.loggedIn = false;
+          this.logout();
         }
       }
     });

@@ -20,6 +20,7 @@ import { DropdownDirective } from './shared/dropdown.directive';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { GraphQLModule } from './apollo.config';
 import { TokenInterceptor } from './shared/services/auth.interceptor';
+import { ByauthorComponent } from './news/byauthor.component';
  
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { TokenInterceptor } from './shared/services/auth.interceptor';
     ArticleComponent,
     NavbarComponent,
     DropdownDirective,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    ByauthorComponent
   ],
   imports: [
     BrowserModule,
